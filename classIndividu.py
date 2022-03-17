@@ -3,13 +3,10 @@ class Individu:
     def __init__(self, x, y):
         self.position= (x, y)
         self.chemin = None 
-
-
 class Salle:
     def __init__(self,longueur, largeur):
         self.longueur = longueur
         self.largeur = largeur
-
 class Droites:
     def __init__(self):
         self.coefDirect = None
@@ -27,7 +24,6 @@ class Droites:
                 self.sens= -1
             else:
                 self.sens= 1
-
 class Obstacles:
     def __init__(self, x, y):
         self.position = (x,y)
