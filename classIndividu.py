@@ -2,63 +2,112 @@
 
 class Individu:
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, vitesse):
         self.position= (x, y)
+        self.vitesse = vitesse
+        self.droiteVerticale= False
         self.coefDirect = None
         self.ordOrigine = None
         self.sens= None
-        Salle.individu.append(self)
     
     
-    def droiteCheminNaif(self, Individu, Salle.arrivee):
+    def droiteCheminNaif(self, Salle):
+        '''
+        
+        In: 
+        Out: 
+        '''
         #Salle.arrivee est un tuple avec les coords
-        if Individu.position[0] == Salle.arrivee[0]:
-            if Individu.position[1] == Salle.arrivee[1]:
-                Individu.isDrawn == False
-            else:
-                #droite horizontale
-                #TODO
-                pass
 
+        if self.position[0] == Salle.arrivee[0]:
+            if self.position[1] == Salle.arrivee[1]:
+                self.supprimer_individu()
+            else:
+                self.droiteVerticale = True
+                if self.position[1] > Salle.arrivee[1]:
+                    self.sens = -1
+                else:
+                    self.sens = 1
         else:
-            self.coefDirect = (Individu.position[1] - Salle.arrivee[1]) / (Individu.position[0] - Salle.arrivee[0])
-            self.ordOrigine = Individu.position[1]-(self.coefDirect*Individu.position[0])
-            if Individu.position[0] > Salle.arrivee[0]:
+            #l'individu n'est pas sur l'arrivée
+            self.coefDirect = (self.position[1] - Salle.arrivee[1]) / (self.position[0] - Salle.arrivee[0])
+            self.ordOrigine = self.position[1] - (self.coefDirect*self.position[0])
+
+            if self.position[0] > Salle.arrivee[0]:
                 self.sens = -1
             else:
                 self.sens = 1
     
-    def supprimer_balle(self,Salle):
+    def supprimer_individu(self, Salle):
         '''
-        Supprime la balle de la liste des balles en jeu
+        OK
+        Supprime l'individu de la liste des individu de la classe Salle
         In: jeu
         Out: None
         '''
-        if len(Salle.individu) != 0:    
-            for i in range (len(Salle.individu)):
-                if Salle.individu[i]==self:
-                    Salle.individu.pop(i)
+        if len(Salle.individus) != 0:   
+
+            for i in range (len(Salle.individus)):
+                if Salle.individus[i]==self:
+                    Salle.individus.pop(i)
                     break
             
 
-    def deplacement(self, vitesse):
-        x = self.position[0] + self.sens * vitesse
-        y = self.coefDirect * x + self.ordOrigine
-        self.position = (x,y)
+    def deplacement(self):
+        '''
 
-    def deplacementVertical(self, vitesse):
-        y = self.position[1] + self.sens * vitesse
-        self.position = (self.position[0], y)
+        In: None
+        Out: None
+        '''
+        if not(self.droiteVerticale):
+            x = self.position[0] + self.sens * self.vitesse
+            y = self.coefDirect * x + self.ordOrigine
+            self.position = (x,y)
+            
+        else:
+            y = self.position[1] + self.sens * self.vitesse
+            self.position = (self.position[0], y)
 
 
 class Salle:
     def __init__(self):
         self.x = 800
         self.y = 600
-        self.individu = []
-        self.arrivee = (0,300)
+        self.individus = []
+        self.arrivee = (0,0)
     
 class Obstacles:
     def __init__(self, x, y):
         self.position = (x,y)
         self.mouvement = False
+
+
+
+#______________________TESTS_________________________#
+
+salle = Salle()
+cobaye = Individu(10, 10, 1)
+salle.individus.append(cobaye)
+cobaye.droiteCheminNaif(salle)
+
+def jeu():
+    if cobaye.droiteVerticale == True:
+        if cobaye.sens == 1:
+            while cobaye.position[1] < salle.arrivee[1]:
+                cobaye.deplacement()
+                print(cobaye.position)
+        else:
+            while cobaye.position[1] > salle.arrivee[1]:
+                cobaye.deplacement()
+                print(cobaye.position)
+    else:   
+        if cobaye.sens == 1:
+            while cobaye.position[0] < salle.arrivee[0]:
+                cobaye.deplacement()
+                print(cobaye.position)
+        else:
+            while cobaye.position[0] > salle.arrivee[0]:
+                cobaye.deplacement()
+                print(cobaye.position)
+
+jeu()
