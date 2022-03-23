@@ -9,6 +9,7 @@ class Individu:
         self.coefDirect = None
         self.ordOrigine = None
         self.sens= None
+        salle.individus.append(self)
     
     
     def droiteCheminNaif(self, Salle):
@@ -76,6 +77,9 @@ class Salle:
         self.individus = []
         self.arrivee = (0,0)
     
+    def printNbIndividu(self):
+        print(len(self.individus))
+    
 class Obstacles:
     def __init__(self, x, y):
         self.position = (x,y)
@@ -87,7 +91,7 @@ class Obstacles:
 
 salle = Salle()
 cobaye = Individu(10, 10, 1)
-salle.individus.append(cobaye)
+
 cobaye.droiteCheminNaif(salle)
 
 def jeu():
@@ -111,3 +115,4 @@ def jeu():
                 print(cobaye.position)
 
 jeu()
+salle.printNbIndividu()
