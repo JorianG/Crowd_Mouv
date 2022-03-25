@@ -1,4 +1,5 @@
 # coding: utf-8
+import affichage as aff
 
 class Individu:
 
@@ -68,6 +69,7 @@ class Individu:
         else:
             y = self.position[1] + self.sens * self.vitesse
             self.position = (self.position[0], y)
+        aff.jeu.nextRound(self)
 
 
 class Salle:
@@ -90,7 +92,7 @@ class Obstacles:
 #______________________TESTS_________________________#
 
 salle = Salle()
-cobaye = Individu(10, 10, 1)
+cobaye = Individu(400, 300, 100)
 
 cobaye.droiteCheminNaif(salle)
 
@@ -113,6 +115,7 @@ def jeu():
             while cobaye.position[0] > salle.arrivee[0]:
                 cobaye.deplacement()
                 print(cobaye.position)
+
 
 jeu()
 salle.printNbIndividu()
