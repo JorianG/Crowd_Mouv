@@ -64,10 +64,12 @@ class Individu:
         if not(self.droiteVerticale):
             x = self.position[0] + self.sens * self.vitesse
             y = self.coefDirect * x + self.ordOrigine
+            aff.jeu.nextRound(self,x,y)
             self.position = (x,y)
             
         else:
             y = self.position[1] + self.sens * self.vitesse
+            aff.jeu.nextRound(self,self.position[0], y)
             self.position = (self.position[0], y)
         aff.jeu.nextRound(self)
 
