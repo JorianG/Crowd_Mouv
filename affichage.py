@@ -1,4 +1,5 @@
 from tkinter import *
+import time
 global root
 global indice
 
@@ -21,10 +22,16 @@ class jeu:
         self.canvas=Canvas(root,width=self.Largeur,height=self.Hauteur,background="white")
         self.canvas.pack(side=LEFT, padx=5, pady=5)
     
-    def nextRound(self,Individu):
+    def nextRound(self,Individu,newX, newY):
         r=15
         x,y=Individu.position
-        jeu.canvas.create_oval(x-r,y-r,x+r,y+r,width=1, outline="red",fill="red")
+        nbOfSteps = 30
+        rond = self.canvas.create_oval(x-r,y-r,x+r,y+r,width=1, outline="red",fill="red")
+        for i in range (nbOfSteps):
+            self.canvas.move(rond, newX/nbOfSteps, newY/nbOfSteps)
+            self.canvas.update()
+            time.sleep(1/nbOfSteps)
+
 
     
     def __str__(self) -> str:
