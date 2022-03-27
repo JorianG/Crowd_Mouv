@@ -1,4 +1,5 @@
 # coding: utf-8
+import affichage as aff
 
 class Individu:
 
@@ -9,6 +10,7 @@ class Individu:
         self.coefDirect = None
         self.ordOrigine = None
         self.sens= None
+        salle.individus.append(self)
     
     
     def droiteCheminNaif(self, Salle):
@@ -62,11 +64,14 @@ class Individu:
         if not(self.droiteVerticale):
             x = self.position[0] + self.sens * self.vitesse
             y = self.coefDirect * x + self.ordOrigine
+            aff.jeu.nextRound(self,x,y)
             self.position = (x,y)
             
         else:
             y = self.position[1] + self.sens * self.vitesse
+            aff.jeu.nextRound(self,self.position[0], y)
             self.position = (self.position[0], y)
+        aff.jeu.nextRound(self)
 
 
 class Salle:
@@ -75,6 +80,9 @@ class Salle:
         self.y = 600
         self.individus = []
         self.arrivee = (0,0)
+    
+    def printNbIndividu(self):
+        print(len(self.individus))
     
 class Obstacles:
     def __init__(self, x, y):
@@ -86,8 +94,8 @@ class Obstacles:
 #______________________TESTS_________________________#
 
 salle = Salle()
-cobaye = Individu(10, 10, 1)
-salle.individus.append(cobaye)
+cobaye = Individu(400, 300, 100)
+
 cobaye.droiteCheminNaif(salle)
 
 def jeu():
@@ -110,4 +118,6 @@ def jeu():
                 cobaye.deplacement()
                 print(cobaye.position)
 
+
 jeu()
+salle.printNbIndividu()
