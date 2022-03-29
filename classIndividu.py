@@ -3,21 +3,20 @@ import affichage as aff
 
 class Individu:
 
-    def __init__(self, x, y, vitesse):
-        self.position= (x, y)
+    def __init__(self, x, y, vitesse, salle):
+        self.position = (x, y)
         self.vitesse = vitesse
-        self.droiteVerticale= False
+        self.droiteVerticale = False
         self.coefDirect = None
         self.ordOrigine = None
-        self.sens= None
+        self.sens = None
         salle.individus.append(self)
     
     
     def droiteCheminNaif(self, Salle):
         '''
-        
-        In: 
-        Out: 
+        In: salle
+        Out: None
         '''
         #Salle.arrivee est un tuple avec les coords
 
@@ -39,20 +38,6 @@ class Individu:
                 self.sens = -1
             else:
                 self.sens = 1
-    
-    def supprimer_individu(self, Salle):
-        '''
-        OK
-        Supprime l'individu de la liste des individu de la classe Salle
-        In: jeu
-        Out: None
-        '''
-        if len(Salle.individus) != 0:   
-
-            for i in range (len(Salle.individus)):
-                if Salle.individus[i]==self:
-                    Salle.individus.pop(i)
-                    break
             
 
     def deplacement(self):
@@ -64,14 +49,31 @@ class Individu:
         if not(self.droiteVerticale):
             x = self.position[0] + self.sens * self.vitesse
             y = self.coefDirect * x + self.ordOrigine
-            aff.jeu.nextRound(self,x,y)
+            #aff.jeu.nextRound(self,x,y)
             self.position = (x,y)
             
         else:
             y = self.position[1] + self.sens * self.vitesse
-            aff.jeu.nextRound(self,self.position[0], y)
+            #aff.jeu.nextRound(self,self.position[0], y)
             self.position = (self.position[0], y)
-        aff.jeu.nextRound(self)
+        #aff.jeu.nextRound(self, x, y)
+
+
+    def estArrive(self, salle):
+        if self.droiteVerticale:
+            if self.sens == 1:
+                if self.position[1] >= salle.arrivee[1]:
+                    salle.individus.remove(self)
+            else:
+                if self.position[1] <= salle.arrivee[1]:
+                    salle.individus.remove(self)
+        else:   
+            if self.sens == 1:
+                if self.position[0] >= salle.arrivee[0]:
+                    salle.individus.remove(self)
+            else:
+                if self.position[0] <= salle.arrivee[0]:
+                    salle.individus.remove(self)
 
 
 class Salle:
@@ -91,33 +93,29 @@ class Obstacles:
 
 
 
+def tour(salle):
+    for individu in salle.individus:
+        individu.deplacement()
+        individu.estArrive(salle)
+        print(individu.position)
+
+def jeu(salle):
+    while len(salle.individus) > 0:
+        tour(salle)
+        print(salle.individus)
+
 #______________________TESTS_________________________#
 
 salle = Salle()
-cobaye = Individu(400, 300, 100)
-
-cobaye.droiteCheminNaif(salle)
-
-def jeu():
-    if cobaye.droiteVerticale == True:
-        if cobaye.sens == 1:
-            while cobaye.position[1] < salle.arrivee[1]:
-                cobaye.deplacement()
-                print(cobaye.position)
-        else:
-            while cobaye.position[1] > salle.arrivee[1]:
-                cobaye.deplacement()
-                print(cobaye.position)
-    else:   
-        if cobaye.sens == 1:
-            while cobaye.position[0] < salle.arrivee[0]:
-                cobaye.deplacement()
-                print(cobaye.position)
-        else:
-            while cobaye.position[0] > salle.arrivee[0]:
-                cobaye.deplacement()
-                print(cobaye.position)
+cobaye = Individu(400, 300, 100, salle)
+stagiere = Individu(200, 400, 100, salle)
 
 
-jeu()
-salle.printNbIndividu()
+for individu in salle.individus:
+    individu.droiteCheminNaif(salle)
+
+
+jeu(salle)
+#salle.printNbIndividu()
+
+
