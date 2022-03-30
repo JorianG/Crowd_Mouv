@@ -26,9 +26,9 @@ class jeu:
         r=15
         x,y=Individu.position
         nbOfSteps = 30
-        rond = self.canvas.create_oval(x-r,y-r,x+r,y+r,width=1, outline="red",fill="red")
+        #rond = self.canvas.create_oval(x-r,y-r,x+r,y+r,width=1, outline="red",fill="red")
         for i in range (nbOfSteps):
-            self.canvas.move(rond, newX/nbOfSteps, newY/nbOfSteps)
+            self.canvas.move(Individu.rond, -newX/nbOfSteps, -newY/nbOfSteps)
             self.canvas.update()
             time.sleep(1/nbOfSteps)
 

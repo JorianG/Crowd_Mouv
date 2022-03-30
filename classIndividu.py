@@ -11,6 +11,8 @@ class Individu:
         self.ordOrigine = None
         self.sens = None
         salle.individus.append(self)
+        self.r=15
+        self.rond = aff.jeu.canvas.create_oval(self.position[0]-self.r,self.position[1]-self.r,self.position[0]+self.r,self.position[1]+self.r,width=1, outline="red",fill="red")
     
     
     def droiteCheminNaif(self, Salle):
@@ -49,14 +51,14 @@ class Individu:
         if not(self.droiteVerticale):
             x = self.position[0] + self.sens * self.vitesse
             y = self.coefDirect * x + self.ordOrigine
-            #aff.jeu.nextRound(self,x,y)
+            aff.jeu.nextRound(self,x,y)
             self.position = (x,y)
             
         else:
             y = self.position[1] + self.sens * self.vitesse
-            #aff.jeu.nextRound(self,self.position[0], y)
+            aff.jeu.nextRound(self,self.position[0], y)
             self.position = (self.position[0], y)
-        #aff.jeu.nextRound(self, x, y)
+        aff.jeu.nextRound(self, x, y)
 
 
     def estArrive(self, salle):
