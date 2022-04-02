@@ -23,8 +23,7 @@ class jeu:
         self.canvas.pack(side=LEFT, padx=5, pady=5)
     
     def nextRound(self,Individu,newX, newY):
-        r=15
-        x,y=Individu.position
+        newX,newY=Individu.position
         nbOfSteps = 30
         #rond = self.canvas.create_oval(x-r,y-r,x+r,y+r,width=1, outline="red",fill="red")
         for i in range (nbOfSteps):
