@@ -16,10 +16,9 @@ class Individu:
         self.sens = None
         self.distance = None
         self.distanceArrivee(salle)
-        self.r=15
+        self.r = 15
         salle.individus.append(self)
         self.rond = aff.jeu.canvas.create_oval(self.position[0]-self.r,self.position[1]-self.r,self.position[0]+self.r,self.position[1]+self.r,width=1, outline="red",fill="red")
-    
 
     def __repr__(self):
         return repr((self. nom, self.position, int(self.distance)))
@@ -49,21 +48,18 @@ class Individu:
 
     def deplacement(self, salle):
         '''
-
         In: None
         Out: None
         '''
         if not(self.droiteVerticale):
             x = self.position[0] + self.sens * self.vitesse
             y = self.coefDirect * x + self.ordOrigine
-            #aff.jeu.nextRound(self,x,y)
             self.position = (x,y)
             
         else:
             y = self.position[1] + self.sens * self.vitesse
-            #aff.jeu.nextRound(self,self.position[0], y)
             self.position = (self.position[0], y)
-        #aff.jeu.nextRound(self, x, y)
+        #aff.jeu.nextRound(self)
         self.distanceArrivee(salle)
 
     def estArrive(self, salle):
@@ -71,23 +67,37 @@ class Individu:
             if self.sens == 1:
                 if self.position[1] >= salle.arrivee[1]:
                     salle.individus.remove(self)
+                    print("1")
             else:
                 if self.position[1] <= salle.arrivee[1]:
                     salle.individus.remove(self)
+                    print("2")
         else:   
             if self.sens == 1:
                 if self.position[0] >= salle.arrivee[0]:
                     salle.individus.remove(self)
+                    print("3")
+                    print()
             else:
                 if self.position[0] <= salle.arrivee[0]:
                     salle.individus.remove(self)
+                    print("4")
 
 
     def distanceArrivee(self, salle):
+        """
+        calcule la distance entre l'arrivee et l'individu
+        In: salle
+        Out: None
+        """
         if self.droiteVerticale:
             self.distance = abs(salle.arrivee[1] - self.position[1])
         else:
             self.distance = ((salle.arrivee[0] - self.position[0]) ** 2 + (salle.arrivee[1] - self.position[1]) ** 2) ** 0.5
+
+    
+    def collision(self, salle):
+        return len(aff.jeu.canvas.find_overlapping(aff.jeu.canvas.coords(self.rond)[0], aff.jeu.canvas.coords(self.rond)[1], aff.jeu.canvas.coords(self.rond)[2], aff.jeu.canvas.coords(self.rond)[3])) > 1
 
 
 #__________________________________________________________________________________________#
@@ -102,19 +112,23 @@ class Salle:
 class Obstacles:
     def __init__(self, x, y):
         self.position = (x,y)
-        self.mouvement = False
 
 #__________________________________________________________________________________________#
 
 
 def tour(salle):
-    salle.individus = sorted(salle.individus, key = lambda individu: individu.distance, reverse = False)
     print(salle.individus)
+    salle.individus = sorted(salle.individus, key = lambda individu: individu.distance, reverse = False)
     for individu in salle.individus:
         individu.deplacement(salle)
         individu.distanceArrivee(salle)
         individu.estArrive(salle)
-        
+        '''
+        anciennePosition = individu.rond
+        aff.jeu.nextRound(individu, individu.position[0], individu.position[1])
+        if individu.collision(salle):
+            individu.rond = anciennePosition
+        '''
 
 
 def jeu(salle):
@@ -124,8 +138,8 @@ def jeu(salle):
 #______________________TESTS_________________________#
 
 salle = Salle()
-cobaye = Individu(800, 600, 100, salle, "cobaye")
-stagiaire = Individu(400, 0, 25, salle, "stagiaire")
+cobaye = Individu(40, 10, 10, salle, "cobaye")
+stagiaire = Individu(1, 300, 50, salle, "stagiaire")
 
 
 for individu in salle.individus:
