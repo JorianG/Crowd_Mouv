@@ -1,5 +1,6 @@
 # coding: utf-8
 from msilib.schema import SelfReg
+from pickle import NEWOBJ_EX
 import affichage as aff
 
 
@@ -37,7 +38,7 @@ class Individu:
             else:
                 self.sens = 1
         else:
-            self.coefDirect = (self.position[1] - Salle.arrivee[1]) / (self.position[0] - Salle.arrivee[0])
+            self.coefDirect = (Salle.arrivee[1] - self.position[1]) / (Salle.arrivee[0] - self.position[0])
             self.ordOrigine = self.position[1] - (self.coefDirect*self.position[0])
 
             if self.position[0] > Salle.arrivee[0]:
@@ -45,12 +46,12 @@ class Individu:
             else:
                 self.sens = 1
             
-
+    '''
     def deplacement(self, salle):
-        '''
+        
         In: None
         Out: None
-        '''
+        
         if not(self.droiteVerticale):
             x = self.position[0] + self.sens * self.vitesse
             y = self.coefDirect * x + self.ordOrigine
@@ -60,6 +61,30 @@ class Individu:
             y = self.position[1] + self.sens * self.vitesse
             self.position = (self.position[0], y)
         self.distanceArrivee(salle)
+    '''
+    def deplacement(self, salle):
+        self.droiteCheminNaif(salle)
+        print(self.coefDirect)
+        v = self.vitesse
+        deltaM = v/10
+        distMin = self.distanceMinimale(salle)
+        i = 0
+        newX = 0
+        newY = 0
+        while distMin > self.r*2 and  i < 10 :
+            newX = ((deltaM**2)/self.coefDirect**2+1)**1/2
+            newY = self.coefDirect*newX
+            i+=1
+        self.position= (self.position[0] + newX, self.position[1] + newY)
+
+    def distanceMinimale(self, salle):
+        mini = 100000
+        for individu in salle.individus[:salle.individus.index(self)]:
+            dist = ((self.position[0] - individu.position[0])**2 + (self.position[1] - individu.position[1])**2) ** 1/2
+            if dist < mini:
+                mini = dist
+        #print(mini)
+        return mini
 
     def estArrive(self, salle):
         if self.droiteVerticale:
@@ -80,7 +105,7 @@ class Individu:
             else:
                 if self.position[0] <= salle.arrivee[0]:
                     salle.individus.remove(self)
-                    print("4")
+                    print("Depassé arrivee")
 
 
     def distanceArrivee(self, salle):
@@ -140,11 +165,11 @@ def jeu(salle):
 #______________________TESTS_________________________#
 
 salle = Salle()
-cobaye = Individu(-80, 800, 10, salle, "cobaye")
-stagiaire = Individu(-80, 800, 50, salle, "stagiaire")
+cobaye = Individu(800, 400, 1, salle, "cobaye")
+stagiaire = Individu(800, 0, 1, salle, "stagiaire")
 
 
-for individu in salle.individus:
+for individu in salle.individus:    
     individu.droiteCheminNaif(salle)
 
 

@@ -30,7 +30,7 @@ class jeu:
             for i in range (50):
                 self.canvas.move(individu.rond, -newX/50, -newY/50)
                 self.canvas.update()
-                time.sleep(1/50)
+                time.sleep(1/70)
 
 
 jeu = jeu()
