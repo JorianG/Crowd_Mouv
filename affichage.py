@@ -1,7 +1,6 @@
 from tkinter import *
 import time
 global root
-global indice
 
 root = Tk()
 class jeu:
@@ -10,8 +9,8 @@ class jeu:
     Les balles presentes dans le jeu sont listees dans la liste self.balles.
     '''
     def __init__(self):
-        self.Largeur = 800
-        self.Hauteur = 600
+        self.Largeur = 900
+        self.Hauteur = 700
 
     def cree_fenetre(self):
         '''
@@ -21,24 +20,18 @@ class jeu:
         '''
         self.canvas=Canvas(root,width=self.Largeur,height=self.Hauteur,background="white")
         self.canvas.pack(side=LEFT, padx=5, pady=5)
-    
-    def nextRound(self,Individu):
-        newX,newY=Individu.position
-        nbOfSteps = 30
-        #rond = self.canvas.create_oval(x-r,y-r,x+r,y+r,width=1, outline="red",fill="red")
-        for i in range (nbOfSteps):
-            self.canvas.move(Individu.rond, -newX/nbOfSteps, -newY/nbOfSteps)
-            self.canvas.update()
-            time.sleep(1/nbOfSteps)
-
 
     
-    def __str__(self) -> str:
-        x = ""
-        for i in range (len(self.balles)):
-            x+= " "
-            x+= str(self.balles[i].taille)
-        return x
+    def nextRound(self,salle):
+
+        for individu in salle.individus:
+            newX,newY=individu.position
+            #self.canvas.move(individu.rond, newX, newY)
+            for i in range (50):
+                self.canvas.move(individu.rond, -newX/50, -newY/50)
+                self.canvas.update()
+                time.sleep(1/50)
+
 
 jeu = jeu()
 jeu.cree_fenetre()
