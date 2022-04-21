@@ -1,8 +1,7 @@
 # coding: utf-8
-from msilib.schema import SelfReg
-from pickle import NEWOBJ_EX
-import affichage as aff
 
+import affichage as aff
+aff.jeu.cree_fenetre()
 
 #__________________________________________________________________________________________#
 class Individu:
@@ -64,7 +63,7 @@ class Individu:
     '''
     def deplacement(self, salle):
         self.droiteCheminNaif(salle)
-        print(self.coefDirect)
+        print(f'coef directeur de {self.nom}: {self.coefDirect}')
         v = self.vitesse
         deltaM = v/10
         distMin = self.distanceMinimale(salle)
@@ -131,7 +130,7 @@ class Salle:
         self.x = 800
         self.y = 600
         self.individus = []
-        self.arrivee = (400, 100)
+        self.arrivee = (50, 50)
         self.r = 20
         self.aff = aff.jeu.canvas.create_oval(self.arrivee[0]-self.r,self.arrivee[1]-self.r,self.arrivee[0]+self.r,self.arrivee[1]+self.r,width=1, outline="red",fill="blue")
 #__________________________________________________________________________________________#    

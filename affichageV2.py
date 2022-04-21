@@ -22,8 +22,7 @@ class jeu:
         self.canvas.pack(side=LEFT, padx=5, pady=5)
 
     
-    def nextRound(self,salle):
-        for individu in salle.individus:
+    def nextRound(self,individu):
             newX,newY=individu.position
             print(f'rendeding  {individu.nom } at {individu.position}')
             #self.canvas.move(individu.rond, newX, newY)
