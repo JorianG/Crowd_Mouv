@@ -43,15 +43,14 @@ class Individu:
         
     def deplacement(self):
         self.isStrait()
-        if self.droiteVerticale == False:
-            print (f' calculated {self.nom} at : x:{self.positionX} for vector {(self.arriveeX - self.positionX)} y:{self.positionY} for vector {(self.arriveeY - self.positionY)}')
-            print(f'    test calculX {self.positionX} + {(self.arriveeX - self.positionX)} = {(self.positionX + (self.arriveeX - self.positionX))}')
-            print(f'    test calculY {self.positionY} + {(self.arriveeY - self.positionY)} = {(self.positionY + (self.arriveeY - self.positionY))}')
-            self.vecteurArriveeX = (self.arriveeX - self.positionX)
-            self.vecteurArriveeY = (self.arriveeY - self.positionY)
-            self.positionX = (self.positionX + (self.arriveeX - self.positionX))
-            self.positionY = (self.positionY + (self.arriveeY - self.positionY))
-            print(self.vecteurArriveeX, self.vecteurArriveeY)
+        print (f' calculated {self.nom} at : x:{self.positionX} for vector {(self.arriveeX - self.positionX)} y:{self.positionY} for vector {(self.arriveeY - self.positionY)}')
+        print(f'    test calculX {self.positionX} + {(self.arriveeX - self.positionX)} = {(self.positionX + (self.arriveeX - self.positionX))}')
+        print(f'    test calculY {self.positionY} + {(self.arriveeY - self.positionY)} = {(self.positionY + (self.arriveeY - self.positionY))}')
+        self.vecteurArriveeX = (self.arriveeX - self.positionX)
+        self.vecteurArriveeY = (self.arriveeY - self.positionY)
+        self.positionX = (self.positionX + (self.arriveeX - self.positionX))
+        self.positionY = (self.positionY + (self.arriveeY - self.positionY))
+        print(self.vecteurArriveeX, self.vecteurArriveeY)
 
         #else :
             #droite strait
@@ -81,7 +80,7 @@ class Salle:
         self.x = 800
         self.y = 400
         self.individus = []
-        self.arrivee = (400, 300)
+        self.arrivee = (800, 600)
         self.r = 20
         self.aff = aff.jeu.canvas.create_oval(self.arrivee[0]-self.r,self.arrivee[1]-self.r,self.arrivee[0]+self.r,self.arrivee[1]+self.r,width=1, outline="red",fill="blue")
 #__________________________________________________________________________________________#    
@@ -120,7 +119,7 @@ def jeu(salle):
 #______________________TESTS_________________________#
 
 salle = Salle()
-cobaye = Individu(50, 50, 5, salle, "cobaye","red")
+cobaye = Individu(0, 300, 5, salle, "cobaye","red")
 stagiaire = Individu(800, 600, 5, salle, "stagiaire","green")
 
 
