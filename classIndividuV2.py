@@ -1,6 +1,6 @@
 # coding: utf-8
 
-import affichage as aff
+import affichageV2 as aff
 
 
 #__________________________________________________________________________________________#
@@ -11,6 +11,9 @@ class Individu:
         self.positionX = x
         self.positionY = y
         self.position = (self.positionX, self.positionY)
+        self.vecteurArriveeX= 0
+        self.vecteurArriveeY = 0
+        self.positionDeapart = (x, y)
         self.vitesse = vitesse
         self.droiteVerticale = False
         self.coefDirect = None
@@ -30,7 +33,7 @@ class Individu:
     def estArrive(self, salle):
         if self.positionX == self.arriveeX and self.positionY == self.arriveeY:
             salle.individus.remove(self)
-            print("Depassé arrivee")
+            print("Arrivée exacte")
                 
     def isStrait(self):
         if self.positionX == self.arriveeX:
@@ -41,13 +44,19 @@ class Individu:
     def deplacement(self):
         self.isStrait()
         if self.droiteVerticale == False:
-            print (f' Indiv {self.nom} x:{self.positionX} for {(self.arriveeX - self.positionX)} y:{self.positionY} for {(self.arriveeY - self.positionY)}')
-
+            print (f' calculated {self.nom} at : x:{self.positionX} for vector {(self.arriveeX - self.positionX)} y:{self.positionY} for vector {(self.arriveeY - self.positionY)}')
+            print(f'    test calculX {self.positionX} + {(self.arriveeX - self.positionX)} = {(self.positionX + (self.arriveeX - self.positionX))}')
+            print(f'    test calculY {self.positionY} + {(self.arriveeY - self.positionY)} = {(self.positionY + (self.arriveeY - self.positionY))}')
+            self.vecteurArriveeX = (self.arriveeX - self.positionX)
+            self.vecteurArriveeY = (self.arriveeY - self.positionY)
             self.positionX = (self.positionX + (self.arriveeX - self.positionX))
-            self.positionX = (self.positionY + (self.arriveeY - self.positionY))
+            self.positionY = (self.positionY + (self.arriveeY - self.positionY))
+            print(self.vecteurArriveeX, self.vecteurArriveeY)
 
-            self.position=(self.positionX,self.positionY)
-            aff.jeu.nextRound(self)
+        #else :
+            #droite strait
+
+            
 
     def distanceArrivee(self, salle):
         """
@@ -72,7 +81,7 @@ class Salle:
         self.x = 800
         self.y = 400
         self.individus = []
-        self.arrivee = (750, 0)
+        self.arrivee = (400, 300)
         self.r = 20
         self.aff = aff.jeu.canvas.create_oval(self.arrivee[0]-self.r,self.arrivee[1]-self.r,self.arrivee[0]+self.r,self.arrivee[1]+self.r,width=1, outline="red",fill="blue")
 #__________________________________________________________________________________________#    
@@ -88,7 +97,11 @@ def tour(salle):
     for individu in salle.individus:
         individu.deplacement()
         individu.distanceArrivee(salle)
+
+        #print(f' nb of indiv {len(salle.individus)}')
+        aff.jeu.nextRound(individu)
         individu.estArrive(salle)
+
         
 
     '''
@@ -107,8 +120,8 @@ def jeu(salle):
 #______________________TESTS_________________________#
 
 salle = Salle()
-cobaye = Individu(800, 400, 5, salle, "cobaye","red")
-stagiaire = Individu(800, 0, 5, salle, "stagiaire","green")
+cobaye = Individu(50, 50, 5, salle, "cobaye","red")
+stagiaire = Individu(800, 600, 5, salle, "stagiaire","green")
 
 
 

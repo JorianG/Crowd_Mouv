@@ -23,13 +23,15 @@ class jeu:
 
     
     def nextRound(self,individu):
-            newX,newY=individu.position
-            print(f'rendeding  {individu.nom } at {individu.position}')
+            newX = individu.vecteurArriveeX
+            newY = individu.vecteurArriveeY
+
+            print(f'rendeding  {individu.nom } at {newX, newY}')
             #self.canvas.move(individu.rond, newX, newY)
-            for i in range (50):
-                self.canvas.move(individu.rond, -newX/50, -newY/50)
+            for i in range (100):
+                self.canvas.move(individu.rond, (newX/100), newY/100)
                 self.canvas.update()
-                time.sleep(1/70)
+                time.sleep(1/50)
 
 
 jeu = jeu()
