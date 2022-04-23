@@ -28,11 +28,11 @@ class Individu:
         self.rond = aff.jeu.canvas.create_oval(self.positionX-self.r,self.positionY-self.r,self.positionX+self.r,self.positionY+self.r,width=1, outline="black",fill=color)
 
     def __repr__(self):
-        return repr((self. nom, self.positionX, self.positionY, int(self.distance)))
+        return repr((self.nom, self.positionX, self.positionY, int(self.distance)))
 
     def estArrive(self, salle):
         
-        if self.positionPrecedenteX - self.arriveeX * self.positionX - self.arriveeX  < 0:
+        if (self.positionPrecedenteX - self.arriveeX) * (self.positionX - self.arriveeX)  < 0 and (self.positionPrecedenteY - self.arriveeX) * (self.positionY - self.arriveeX):
             salle.individus.remove(self)
         
             print("Arrivée dépassée")
@@ -50,7 +50,7 @@ class Individu:
         hypotenuse = (((self.vecteurArriveeX**2)+(self.vecteurArriveeY**2))**0.5)
         self.coefDeplacementX = (self.vecteurArriveeX * self.vitesse)/ hypotenuse
         self.coefDeplacementY = (self.vecteurArriveeY * self.vitesse) / hypotenuse
-        #print(f'delacement de x:{self.coefDeplacementX} y:{self.coefDeplacementY}')
+        print(f'delacement de x:{self.coefDeplacementX} y:{self.coefDeplacementY}')
      
 
     def distanceArrivee(self, salle):
