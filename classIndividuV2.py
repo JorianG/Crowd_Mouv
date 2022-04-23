@@ -17,13 +17,12 @@ class Individu:
         self.positionDepart = (x, y)
         self.vitesse = vitesse
         self.droiteVerticale = False
-        self.coefDirect = None
-        self.ordOrigine = None
-        self.sens = None
         self.distance = None
         self.distanceArrivee(salle)
         self.arriveeX= salle.arrivee[0]
         self.arriveeY= salle.arrivee[1]
+        self.coefDeplacementX = 0
+        self.coefDeplacementY = 0
         self.r = 10
         salle.individus.append(self)
         self.rond = aff.jeu.canvas.create_oval(self.positionX-self.r,self.positionY-self.r,self.positionX+self.r,self.positionY+self.r,width=1, outline="black",fill=color)
@@ -43,33 +42,16 @@ class Individu:
             self.droiteVerticale = True
         if self.positionY == self.arriveeY:
             self.droiteVerticale = True
-        
-    def deplacement(self):
-        self.isStrait()
+
+    def calculDeplacement(self):
         print (f' calculated {self.nom} at : x:{self.positionX} for vector {(self.arriveeX - self.positionX)} y:{self.positionY} for vector {(self.arriveeY - self.positionY)}')
-        print(f'    test calculX {self.positionX} + {(self.arriveeX - self.positionX)} = {(self.positionX + (self.arriveeX - self.positionX))}')
-        print(f'    test calculY {self.positionY} + {(self.arriveeY - self.positionY)} = {(self.positionY + (self.arriveeY - self.positionY))}')
         self.vecteurArriveeX = (self.arriveeX - self.positionX)
         self.vecteurArriveeY = (self.arriveeY - self.positionY)
-        self.positionX = (self.positionX + (self.arriveeX - self.positionX))
-        self.positionY = (self.positionY + (self.arriveeY - self.positionY))
-        print(self.vecteurArriveeX, self.vecteurArriveeY)
-
-    def deplacement_mieux(self):
-        self.vecteurArriveeX = (self.arriveeX - self.positionX)
-        self.vecteurArriveeY = (self.arriveeY - self.positionY)
-        a = atan(self.vecteurArriveeX / self.vecteurArriveeY)
-        dy = cos(a) * self.vitesse
-        dx = sin(a) * self.vitesse
-        self.positionPrecedenteX = self.positionX
-        self.positionPrecedenteY = self.positionY
-        self.positionX += dx
-        self.positionY += dy
-        aff.jeu.nouvelle_pos(self)
-        print(self.positionX, self.positionY)
-
-
-            
+        hypotenuse = (((self.vecteurArriveeX**2)+(self.vecteurArriveeY**2))**0.5)
+        self.coefDeplacementX = (self.vecteurArriveeX * self.vitesse)/ hypotenuse
+        self.coefDeplacementY = (self.vecteurArriveeY * self.vitesse) / hypotenuse
+        #print(f'delacement de x:{self.coefDeplacementX} y:{self.coefDeplacementY}')
+     
 
     def distanceArrivee(self, salle):
         """
@@ -108,11 +90,10 @@ class Obstacles:
 def tour(salle):
     salle.individus = sorted(salle.individus, key = lambda individu: individu.distance, reverse = False)
     for individu in salle.individus:
-        individu.deplacement_mieux()
-        individu.distanceArrivee(salle)
-
+        individu.positionX += individu.coefDeplacementX
+        individu.positionY += individu.coefDeplacementY
         #print(f' nb of indiv {len(salle.individus)}')
-        #aff.jeu.nextRound(individu)
+        aff.jeu.nextRound(individu)
         individu.estArrive(salle)
 
         
@@ -123,21 +104,24 @@ def tour(salle):
         if individu.collision(salle):
             individu.rond = anciennePosition
         '''
-
+        
+def initialisation(salle):
+    for individu in salle.individus:
+        individu.calculDeplacement()
 
 def jeu(salle):
+    initialisation(salle)
     while len(salle.individus) > 0:
+        
         tour(salle)
         print(salle.individus)
 
 #______________________TESTS_________________________#
 
 salle = Salle()
-cobaye = Individu(0, 300, 5, salle, "cobaye","red")
+cobaye = Individu(0, 300, 50, salle, "cobaye","red")
 stagiaire = Individu(800, 600, 5, salle, "stagiaire","green")
-for _ in range(10):
-    cobaye.deplacement_mieux()
 
-#jeu(salle)
+jeu(salle)
 #salle.printNbIndividu()
 

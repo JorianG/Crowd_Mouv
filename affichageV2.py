@@ -23,8 +23,8 @@ class jeu:
 
     
     def nextRound(self,individu):
-            newX = individu.vecteurArriveeX
-            newY = individu.vecteurArriveeY
+            newX = individu.positionX
+            newY = individu.positionY
 
             print(f'rendeding  {individu.nom } at {newX, newY}')
             #self.canvas.move(individu.rond, newX, newY)
