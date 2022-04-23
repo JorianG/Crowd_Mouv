@@ -1,6 +1,7 @@
 # coding: utf-8
 from math import atan, cos, sin
 import affichageV2 as aff
+import time
 
 
 #__________________________________________________________________________________________#
@@ -23,7 +24,7 @@ class Individu:
         self.arriveeY= salle.arrivee[1]
         self.coefDeplacementX = 0
         self.coefDeplacementY = 0
-        self.r = 10
+        self.r = 20
         salle.individus.append(self)
         self.rond = aff.jeu.canvas.create_oval(self.positionX-self.r,self.positionY-self.r,self.positionX+self.r,self.positionY+self.r,width=1, outline="black",fill=color)
 
@@ -50,7 +51,7 @@ class Individu:
         hypotenuse = (((self.vecteurArriveeX**2)+(self.vecteurArriveeY**2))**0.5)
         self.coefDeplacementX = (self.vecteurArriveeX * self.vitesse)/ hypotenuse
         self.coefDeplacementY = (self.vecteurArriveeY * self.vitesse) / hypotenuse
-        print(f'delacement de x:{self.coefDeplacementX} y:{self.coefDeplacementY}')
+        print(f'delacement de {self.nom} : x:{self.coefDeplacementX} y:{self.coefDeplacementY}')
      
 
     def distanceArrivee(self, salle):
@@ -89,12 +90,13 @@ class Obstacles:
 
 def tour(salle):
     salle.individus = sorted(salle.individus, key = lambda individu: individu.distance, reverse = False)
+    aff.jeu.nextRound(salle)
+    #time.sleep(5)
     for individu in salle.individus:
         individu.positionX += individu.coefDeplacementX
         individu.positionY += individu.coefDeplacementY
-        #print(f' nb of indiv {len(salle.individus)}')
-        aff.jeu.nextRound(individu)
         individu.estArrive(salle)
+        
 
         
 
@@ -112,15 +114,15 @@ def initialisation(salle):
 def jeu(salle):
     initialisation(salle)
     while len(salle.individus) > 0:
-        
         tour(salle)
         print(salle.individus)
 
 #______________________TESTS_________________________#
 
 salle = Salle()
-cobaye = Individu(0, 300, 50, salle, "cobaye","red")
-stagiaire = Individu(800, 600, 5, salle, "stagiaire","green")
+cobaye = Individu(0, 300, 200, salle, "cobaye","red")
+stagiaire = Individu(750, 550, 270, salle, "stagiaire","green")
+Usain = Individu(800, 600, 350, salle, "Usain","black")
 
 jeu(salle)
 #salle.printNbIndividu()
