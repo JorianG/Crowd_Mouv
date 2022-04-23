@@ -22,15 +22,14 @@ class jeu:
         self.canvas.pack(side=LEFT, padx=5, pady=5)
 
     
-    def nextRound(self,salle):
-        for individu in salle.individus:
-            newX,newY=individu.position
-            print(f'rendeding  {individu.nom } at {individu.position}')
-            #self.canvas.move(individu.rond, newX, newY)
-            for i in range (50):
-                self.canvas.move(individu.rond, -newX/50, -newY/50)
-                self.canvas.update()
-                time.sleep(1/70)
+    def nextRound(self, salle, individu):
+        newX,newY=individu.position
+        print(f'rendeding  {individu.nom } at {individu.position}')
+        #self.canvas.move(individu.rond, newX, newY)
+        for i in range (50):
+            self.canvas.move(individu.rond, -newX/50, -newY/50)
+            self.canvas.update()
+            time.sleep(1/70)
 
 
 jeu = jeu()

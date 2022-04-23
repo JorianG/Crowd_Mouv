@@ -1,5 +1,5 @@
 # coding: utf-8
-
+from math import atan, cos, sin
 import affichageV2 as aff
 
 
@@ -10,10 +10,11 @@ class Individu:
         self.nom = nom
         self.positionX = x
         self.positionY = y
-        self.position = (self.positionX, self.positionY)
+        self.positionPrecedenteX = x
+        self.positionPrecedenteY = y
         self.vecteurArriveeX= 0
         self.vecteurArriveeY = 0
-        self.positionDeapart = (x, y)
+        self.positionDepart = (x, y)
         self.vitesse = vitesse
         self.droiteVerticale = False
         self.coefDirect = None
@@ -28,12 +29,14 @@ class Individu:
         self.rond = aff.jeu.canvas.create_oval(self.positionX-self.r,self.positionY-self.r,self.positionX+self.r,self.positionY+self.r,width=1, outline="black",fill=color)
 
     def __repr__(self):
-        return repr((self. nom, self.position, int(self.distance)))
+        return repr((self. nom, self.positionX, self.positionY, int(self.distance)))
 
     def estArrive(self, salle):
-        if self.positionX == self.arriveeX and self.positionY == self.arriveeY:
+        
+        if self.positionPrecedenteX - self.arriveeX * self.positionX - self.arriveeX  < 0:
             salle.individus.remove(self)
-            print("Arrivée exacte")
+        
+            print("Arrivée dépassée")
                 
     def isStrait(self):
         if self.positionX == self.arriveeX:
@@ -52,8 +55,19 @@ class Individu:
         self.positionY = (self.positionY + (self.arriveeY - self.positionY))
         print(self.vecteurArriveeX, self.vecteurArriveeY)
 
-        #else :
-            #droite strait
+    def deplacement_mieux(self):
+        self.vecteurArriveeX = (self.arriveeX - self.positionX)
+        self.vecteurArriveeY = (self.arriveeY - self.positionY)
+        a = atan(self.vecteurArriveeX / self.vecteurArriveeY)
+        dy = cos(a) * self.vitesse
+        dx = sin(a) * self.vitesse
+        self.positionPrecedenteX = self.positionX
+        self.positionPrecedenteY = self.positionY
+        self.positionX += dx
+        self.positionY += dy
+        aff.jeu.nouvelle_pos(self)
+        print(self.positionX, self.positionY)
+
 
             
 
@@ -80,7 +94,7 @@ class Salle:
         self.x = 800
         self.y = 400
         self.individus = []
-        self.arrivee = (800, 600)
+        self.arrivee = (80, 0)
         self.r = 20
         self.aff = aff.jeu.canvas.create_oval(self.arrivee[0]-self.r,self.arrivee[1]-self.r,self.arrivee[0]+self.r,self.arrivee[1]+self.r,width=1, outline="red",fill="blue")
 #__________________________________________________________________________________________#    
@@ -94,11 +108,11 @@ class Obstacles:
 def tour(salle):
     salle.individus = sorted(salle.individus, key = lambda individu: individu.distance, reverse = False)
     for individu in salle.individus:
-        individu.deplacement()
+        individu.deplacement_mieux()
         individu.distanceArrivee(salle)
 
         #print(f' nb of indiv {len(salle.individus)}')
-        aff.jeu.nextRound(individu)
+        #aff.jeu.nextRound(individu)
         individu.estArrive(salle)
 
         
@@ -121,9 +135,9 @@ def jeu(salle):
 salle = Salle()
 cobaye = Individu(0, 300, 5, salle, "cobaye","red")
 stagiaire = Individu(800, 600, 5, salle, "stagiaire","green")
+for _ in range(10):
+    cobaye.deplacement_mieux()
 
-
-
-jeu(salle)
+#jeu(salle)
 #salle.printNbIndividu()
 

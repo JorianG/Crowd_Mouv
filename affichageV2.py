@@ -33,6 +33,10 @@ class jeu:
                 self.canvas.update()
                 time.sleep(1/50)
 
+    def nouvelle_pos(self, individu):
+        self.canvas.move(individu.rond, individu.positionX, individu.positionY)
+        self.canvas.update()
+
 
 jeu = jeu()
 jeu.cree_fenetre()
