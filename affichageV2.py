@@ -53,19 +53,19 @@ class jeu:
             """for individu in salle.individus:
                 #print(f' for {individu.nom} : {self.canvas.find_overlapping(self.canvas.coords(individu.rond)[0], self.canvas.coords(individu.rond)[1], self.canvas.coords(individu.rond)[2], self.canvas.coords(individu.rond)[3])}')
                 print(f'corrd for {individu.nom} : {self.canvas.coords(individu.rond)[0],self.canvas.coords(individu.rond)[1], self.canvas.coords(individu.rond)[2], self.canvas.coords(individu.rond)[3]}')"""
-            for i in range (100):
+            for i in range (200):
+                salle.individus = sorted(salle.individus, key = lambda individu: individu.distance, reverse = False)
                 for individu in salle.individus:
-                    
-                    x1 = self.canvas.coords(individu.rond)[0] + individu.coefDeplacementX/100
-                    y1 = self.canvas.coords(individu.rond)[1] + individu.coefDeplacementY/100
-                    x2 = self.canvas.coords(individu.rond)[2] + individu.coefDeplacementX/100
-                    y2 = self.canvas.coords(individu.rond)[3] + individu.coefDeplacementY/100
+                    x1 = self.canvas.coords(individu.rond)[0] + individu.coefDeplacementX/200
+                    y1 = self.canvas.coords(individu.rond)[1] + individu.coefDeplacementY/200
+                    x2 = self.canvas.coords(individu.rond)[2] + individu.coefDeplacementX/200
+                    y2 = self.canvas.coords(individu.rond)[3] + individu.coefDeplacementY/200
                     overlap = self.canvas.find_overlapping(x1, y1, x2, y2)
                     #if len(overlap) == 1 or (1 in overlap and len(overlap) == 2):
-                    if overlap[0] == individu.valeur_canvas or overlap[0] == 1:
-                        self.canvas.move(individu.rond, individu.coefDeplacementX/100, individu.coefDeplacementY/100)
+                    if (overlap[0] == individu.valeur_canvas or overlap[0] == 1):
+                        self.canvas.move(individu.rond, individu.coefDeplacementX/200, individu.coefDeplacementY/200)
                     self.canvas.update()
-                    time.sleep(1/50)
+                    time.sleep(1/100)
 
 
 
