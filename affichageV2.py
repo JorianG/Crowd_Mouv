@@ -31,25 +31,15 @@ class jeu:
                 print(f'corrd for {individu.nom} : {self.canvas.coords(individu.rond)[0],self.canvas.coords(individu.rond)[1], self.canvas.coords(individu.rond)[2], self.canvas.coords(individu.rond)[3]}')"""
             for i in range (100):
                 for individu in salle.individus:
-                    overlap = self.canvas.find_overlapping(self.canvas.coords(individu.rond)[0] + individu.coefDeplacementX/100, self.canvas.coords(individu.rond)[1] + individu.coefDeplacementY/100, self.canvas.coords(individu.rond)[2] + individu.coefDeplacementX/100, self.canvas.coords(individu.rond)[3] + individu.coefDeplacementY/100)
-                    #self.canvas.create_rectangle((self.canvas.coords(individu.rond)[0] + individu.coefDeplacementX, self.canvas.coords(individu.rond)[1] + individu.coefDeplacementY, self.canvas.coords(individu.rond)[2] + individu.coefDeplacementX, self.canvas.coords(individu.rond)[3] + individu.coefDeplacementY))
                     
-                    if not(len(overlap) > 1) or (1 in overlap and len(overlap) == 2) :
+                    #INUTILE overlap = self.canvas.find_overlapping(self.canvas.coords(individu.rond)[0] + individu.coefDeplacementX/100, self.canvas.coords(individu.rond)[1] + individu.coefDeplacementY/100, self.canvas.coords(individu.rond)[2] + individu.coefDeplacementX/100, self.canvas.coords(individu.rond)[3] + individu.coefDeplacementY/100)
+                    #self.canvas.create_rectangle((self.canvas.coords(individu.rond)[0] + individu.coefDeplacementX, self.canvas.coords(individu.rond)[1] + individu.coefDeplacementY, self.canvas.coords(individu.rond)[2] + individu.coefDeplacementX, self.canvas.coords(individu.rond)[3] + individu.coefDeplacementY))
+                    if individu.collisions() == individu.valeur_canvas or individu.collisions() == 1:
                         self.canvas.move(individu.rond, (individu.coefDeplacementX/100), individu.coefDeplacementY/100)
                     self.canvas.update()
                     time.sleep(1/50)
-                    
-                
-""""
-collisions = find overlapping
-for i in range(len(collisions)):
-    if liste[collisions[i]] not in salle.individus[:salle.individus.index(individu)]
-        self.
 
-    def nouvelle_pos(self, individu):
-        self.canvas.move(individu.rond, individu.positionX, individu.positionY)
-        self.canvas.update()
-"""
+
 
 jeu = jeu()
 jeu.cree_fenetre()
