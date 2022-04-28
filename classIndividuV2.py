@@ -36,10 +36,11 @@ class Individu:
 
     def estArrive(self, salle):
         
-        if (self.positionPrecedenteX - self.arriveeX) * (self.positionX - self.arriveeX)  < 0 and (self.positionPrecedenteY - self.arriveeX) * (self.positionY - self.arriveeX):
+        if (self.positionPrecedenteX - self.arriveeX) * (self.positionX - self.arriveeX)  < 0 and (self.positionPrecedenteY - self.arriveeY) * (self.positionY - self.arriveeY) < 0:
             
             salle.individus.remove(self)
-            print("Arrivée dépassée")
+            aff.jeu.canvas.delete(self.rond)
+            print("Arrivée dépassée" + self.nom)
                 
     def isStrait(self):
         if self.positionX == self.arriveeX:
@@ -74,7 +75,7 @@ class Individu:
 
     def collisions(self):
         overlap = aff.jeu.canvas.find_overlapping(aff.jeu.canvas.coords(self.rond)[0] + self.coefDeplacementX/100, aff.jeu.canvas.coords(self.rond)[1] + self.coefDeplacementY/100, aff.jeu.canvas.coords(self.rond)[2] + self.coefDeplacementX/100, aff.jeu.canvas.coords(self.rond)[3] + self.coefDeplacementY/100)
-        return overlap[0]
+        return overlap
         #return (len(overlap) > 1) or (1 in overlap and len(overlap) == 2)
 
 
@@ -82,8 +83,8 @@ class Individu:
 
 class Salle:
     def __init__(self):
-        self.x = 800
-        self.y = 400
+        self.x = 600
+        self.y = 800
         self.individus = []
         self.arrivee = (80, 0)
         self.r = 20
@@ -96,31 +97,58 @@ class Obstacles:
 #__________________________________________________________________________________________#
 
 
+"""
 def tour(salle):
     salle.individus = sorted(salle.individus, key = lambda individu: individu.distance, reverse = False)
-    aff.jeu.nextRound(salle)
     #time.sleep(5)
     for individu in salle.individus:
-        #overlap = aff.jeu.canvas.find_overlapping(aff.jeu.canvas.coords(individu.rond)[0] + individu.coefDeplacementX/100, aff.jeu.canvas.coords(individu.rond)[1] + individu.coefDeplacementY/100, aff.jeu.canvas.coords(individu.rond)[2] + individu.coefDeplacementX/100, aff.jeu.canvas.coords(individu.rond)[3] + individu.coefDeplacementY/100)
-        if individu.collisions() != individu.valeur_canvas and individu.collisions() != 1:
-            i = 0
-            while salle.individus[i].valeur_canvas != individu.collisions():
-                i += 1
-            individu.vitesse = salle.individus[i].vitesse
-            individu.calculDeplacement()
+        overlap = aff.jeu.canvas.find_overlapping(aff.jeu.canvas.coords(individu.rond)[0], aff.jeu.canvas.coords(individu.rond)[1], aff.jeu.canvas.coords(individu.rond)[2], aff.jeu.canvas.coords(individu.rond)[3])
+        if not(1 in overlap and len(overlap) > 2):
         
-        individu.positionX += individu.coefDeplacementX
-        individu.positionY += individu.coefDeplacementY
-        individu.estArrive(salle)
+            if overlap[0] != individu.valeur_canvas and overlap[0] != 1:
+            #if individu.collisions()[0] != individu.valeur_canvas and not(int(1) in individu.collisions() and len(individu.collisions()) <v= 2):
+                print(overlap)
+                i = 0
+                while i < len(salle.individus) and salle.individus[i].valeur_canvas != individu.collisions()[0]:
+                    i += 1
+                individu.vitesse = salle.individus[i].vitesse
+                individu.calculDeplacement()
+            
+            individu.positionPrecedenteX = individu.positionX
+            individu.positionPrecedenteY = individu.positionY
+            individu.positionX += individu.coefDeplacementX
+            individu.positionY += individu.coefDeplacementY
+            individu.estArrive(salle)
+    aff.jeu.nextRound(salle)
+"""
 
+
+
+
+def tour(salle):
+    salle.individus = sorted(salle.individus, key = lambda individu: individu.distance, reverse = False)
+    #time.sleep(5)
+    aff.jeu.nextRound(salle)
+    for individu in salle.individus:
+        overlap = aff.jeu.canvas.find_overlapping(aff.jeu.canvas.coords(individu.rond)[0], aff.jeu.canvas.coords(individu.rond)[1], aff.jeu.canvas.coords(individu.rond)[2], aff.jeu.canvas.coords(individu.rond)[3])
+        if not(1 in overlap and len(overlap) > 2):
+        
+            if overlap[0] != individu.valeur_canvas and overlap[0] != 1:
+            #if individu.collisions()[0] != individu.valeur_canvas and not(int(1) in individu.collisions() and len(individu.collisions()) <v= 2):
+                print(overlap)
+                i = 0
+                while i < len(salle.individus) and salle.individus[i].valeur_canvas != individu.collisions()[0]:
+                    i += 1
+                individu.vitesse = salle.individus[i].vitesse
+                individu.calculDeplacement()
+            
+            individu.positionPrecedenteX = individu.positionX
+            individu.positionPrecedenteY = individu.positionY
+            individu.positionX += individu.coefDeplacementX
+            individu.positionY += individu.coefDeplacementY
+            individu.estArrive(salle)
         
 
-'''
-anciennePosition = individu.rond
-aff.jeu.nextRound(individu, individu.position[0], individu.position[1])
-if individu.collision(salle):
-individu.rond = anciennePosition
-'''
 
 
 def initialisation(salle):
@@ -133,12 +161,7 @@ def jeu(salle):
         tour(salle)
         print(salle.individus)
 
-"""
-def ajouter_individus(x, y, vitesse, salle, nom,color):
-    individu_nouveau = Individu(x, y, vitesse, salle, nom,color)
-    nombre_element += 1
-    salle.individus[individu_nouveau] = nombre_element
-"""
+
 
 
 #______________________TESTS_________________________#
@@ -148,14 +171,14 @@ cobaye = Individu(0, 300, 200, salle, "cobaye","red")
 stagiaire = Individu(800, 600, 270, salle, "stagiaire","green")
 Usain = Individu(440, 550, 1500, salle, "Usain","black")
 Bob = Individu(300, 20, 110, salle, "Bob","black")
-Dylan = Individu(721, 320, 175, salle, "Dylan","black")
+Dylan = Individu(500, 320, 175, salle, "Dylan","black")
 Ana = Individu(320, 721, 175, salle, "Ana","black")
 Polina = Individu(420, 420, 210, salle, "Polina","black")
 Remi_Pages = Individu(333, 666, 751, salle, "Remi Pages","purple")
-une_croute = Individu(30, 20, 11, salle, "une_croute","brown")
-Jamel = Individu(10, 10, 10, salle, "Jamel","brown")
 Usain = Individu(500, 560, 1500, salle, "Usain","black")
-
+Jacob = Individu(100, 400, 300, salle, "Jacob","black")
+Paul = Individu(200, 200, 110, salle, "Paul","black")
+Tim = Individu(500, 400, 300, salle, "Tim","black")
 
 
 jeu(salle)
