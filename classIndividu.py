@@ -1,4 +1,4 @@
-import affichageV2 as aff
+import affichage as aff
 
 nombre_element = 1
 #__________________________________________________________________________________________#
