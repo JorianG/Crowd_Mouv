@@ -120,7 +120,7 @@ cobaye = Individu(30, 300, 200, salle, "cobaye","black")
 Usain = Individu(440, 550, 1500, salle, "Usain","black")
 Bob = Individu(300, 30, 110, salle, "Bob","black")
 Dylan = Individu(500, 320, 175, salle, "Dylan","black")
-Ana = Individu(320, 721, 300, salle, "Ana","pink")
+Ana = Individu(320, 721, 300, salle, "Ana","black")
 Claude = Individu(420, 420, 210, salle, "Claude","black")
 Usain = Individu(500, 560, 1500, salle, "Usain","black")
 Jacob = Individu(100, 400, 300, salle, "Jacob","black")
@@ -151,7 +151,7 @@ a24 = Individu(600, 600, 932, salle, "a24","black")
 a25 = Individu(700, 600, 842, salle, "a25","black")
 a26 = Individu(800, 600, 1205, salle, "a26","black")
 
-#a27_SupprimezMoi = Individu(800, 600, 1205, salle, "a27_SupprimezMoi","black")
+a27_SupprimezMoi = Individu(800, 600, 1205, salle, "a27_SupprimezMoi","red")
 
 
 jeu(salle)
